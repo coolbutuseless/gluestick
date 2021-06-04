@@ -43,13 +43,13 @@ gluestick <- function(fmt, src = parent.frame(), open = "{", close = "}") {
   re    <- paste0(open, ".*?", close)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # Extract the names of the variables
+  # Extract the delimited expressions
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   matches  <- gregexpr(re, fmt)
   exprs    <- regmatches(fmt, matches)[[1]]
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # Remove the braces
+  # Remove the delimiters
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   exprs <- substr(exprs, nchar_open + 1L, nchar(exprs) - nchar_close)
 
