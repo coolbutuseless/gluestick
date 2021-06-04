@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 ![](https://img.shields.io/badge/cool-useless-green.svg)
+[![R-CMD-check](https://github.com/coolbutuseless/gluestick/workflows/R-CMD-check/badge.svg)](https://github.com/coolbutuseless/gluestick/actions)
 <!-- badges: end -->
 
 The goal of the `gluestick` package is to provide a home for a single,
@@ -18,6 +19,20 @@ for 99.9% of the reasons I use the amazing
 The idea is that you would just steal the function out of this package
 and use it in your own package in order to avoid having
 [`glue`](https://cran.r-project.org/package=glue) as a dependency.
+
+## Benefits
+
+-   Single function
+-   No dependencies
+-   No C code
+-   Vanilla base R code (easy to hack upon)
+
+## Limitations
+
+-   There is no special handling when delimiters are repeated. This
+    differs from `glue` where doubling the delimiter escpaes it.
+-   No support for glue’s idea of data transformers
+-   Far fewer sanity checks than glue
 
 ## Installation
 
@@ -35,20 +50,6 @@ package in preference to the glue package.
 What I envisage is that if you want something “glue-like” to include in
 your own work, you can just steal the `gluestick()` function out of this
 package and include it in your own package.
-
-## Benefits
-
--   Single function
--   No dependencies
--   No C code
--   Vanilla base R code (easy to hack upon)
-
-## Limitations
-
--   There is no special handling when delimiters are repeated. This
-    differs from `glue` where doubling the delimiter escpaes it.
--   No support for glue’s idea of data transformers
--   Far fewer sanity checks than glue
 
 ## Basic Usage
 
