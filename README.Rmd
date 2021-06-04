@@ -19,6 +19,7 @@ library(gluestick)
 
 <!-- badges: start -->
 ![](https://img.shields.io/badge/cool-useless-green.svg)
+[![R-CMD-check](https://github.com/coolbutuseless/gluestick/workflows/R-CMD-check/badge.svg)](https://github.com/coolbutuseless/gluestick/actions)
 <!-- badges: end -->
 
 The goal of the `gluestick` package is to provide a home for a single, simple function 
