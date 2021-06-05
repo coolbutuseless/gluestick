@@ -42,5 +42,15 @@ test_that("multiplication works", {
     c("hello mike your score is 9")
   )
 
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  fmt <- "hello {name} your score is {8 + 1}"
+  src <- list(name = 'mike')
+
+  expect_error(
+    gluestick(fmt, src, eval = FALSE),
+    "not found"
+  )
+
 
 })

@@ -4,7 +4,7 @@
 \alias{gluestick}
 \title{String interpolation}
 \usage{
-gluestick(fmt, src = parent.frame(), open = "{", close = "}")
+gluestick(fmt, src = parent.frame(), open = "{", close = "}", eval = TRUE)
 }
 \arguments{
 \item{fmt}{single character string containing the format specification.}
@@ -16,6 +16,13 @@ Default: \code{parent.frame()} i.e. the calling environment}
 \item{open, close}{the opening and closing character strings which delimit an expression.
 Default: \code{{}}.  Note: the delimiters can be more complex than
 just a single character}
+
+\item{eval}{logical. Should the expressions be treated as R code to be
+evaluated? Default: TRUE means to treat the expressions as R code and
+evaluate.  If FALSE, then no code evaluation will ever be
+done and expressions will be treated as only variable
+names in the given \code{src} data.  This may be safer in some contexts
+e.g. for user supplied fmt strings.}
 }
 \description{
 Expressions enclosed by specified delimiters will be evaluated as R code

@@ -16,6 +16,12 @@
 #' @param open,close the opening and closing character strings which delimit an expression.
 #'        Default: \code{{}}.  Note: the delimiters can be more complex than
 #'        just a single character
+#' @param eval logical. Should the expressions be treated as R code to be
+#'        evaluated? Default: TRUE means to treat the expressions as R code and
+#'        evaluate.  If FALSE, then no code evaluation will ever be
+#'        done and expressions will be treated as only variable
+#'        names in the given \code{src} data.  This may be safer in some contexts
+#'        e.g. for user supplied fmt strings.
 #'
 #' @examples
 #' gluestick("Hello {name}", list(name = '#RStats'))
@@ -24,19 +30,29 @@
 #'
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-gluestick <- function(fmt, src = parent.frame(), open = "{", close = "}") {
+gluestick <- function(fmt, src = parent.frame(), open = "{", close = "}", eval = TRUE) {
+
+  nchar_open  <- nchar(open)
+  nchar_close <- nchar(close)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Sanity checks
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  stopifnot(is.character(fmt) && length(fmt) == 1)
+  stopifnot(exprs = {
+    is.character(fmt)
+    length(fmt) == 1L
+    is.character(open)
+    length(open) == 1L
+    nchar_open > 0L
+    is.character(close)
+    length(close) == 1
+    nchar_close > 0
+  })
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Brute force the open/close characters into a regular expression for
   # extracting the expressions from the format string
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  nchar_open  <- nchar(open)
-  nchar_close <- nchar(close)
 
   open  <- gsub("(.)", "\\\\\\1", open ) # Escape everything!!
   close <- gsub("(.)", "\\\\\\1", close) # Escape everything!!
@@ -61,8 +77,11 @@ gluestick <- function(fmt, src = parent.frame(), open = "{", close = "}") {
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Evaluate
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  env  <- as.environment(src)
-  args <- lapply(exprs, function(expr) {eval(parse(text = expr), envir = src)})
+  if (eval) {
+    args <- lapply(exprs, function(expr) {eval(parse(text = expr), envir = src)})
+  } else {
+    args <- unname(mget(exprs, envir = as.environment(src)))
+  }
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Create the string(s)
