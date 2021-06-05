@@ -96,29 +96,29 @@ gluestick("Hello ~~!name]]?", open = "~~!", close = "]]?")
 ## Do not evaulate expressions - treat them as referencing named variables only
 
 In some circumstances it might be wise to assume that the expressions
-ren’t actually R code, but only refer to names of variables in the data
+aren’t actually R code, but only refer to names of variables in the data
 source. This might be useful when evaluating format strings input by an
 untrusted user.
 
 If `eval=FALSE` is set, then expressions will be treated as variable
-names, and `mget()` will be used to fetch them from the data source, and
-no code evaluation will occur.
+names, `mget()` will be used to fetch them from the data source, and no
+code evaluation will occur.
 
 ``` r
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # This will work, as 'name' is a variable in the data `src` (i.e. the calling environment)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-gluestick("hello {name}", eval = FALSE)
+gluestick("Hello {name}", eval = FALSE)
 ```
 
-    #> [1] "hello Mike"
+    #> [1] "Hello Mike"
 
 ``` r
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# This won't work as the code is not evaulated, and there is no variable 
+# This won't work as the code is not evaluated, and there is no variable 
 # named `2 * 2` in the `src` data
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-gluestick("hello {2 * 2}", src = list(name = 'mike'), eval = FALSE)
+gluestick("Hello {2 * 2}", src = list(name = 'mike'), eval = FALSE)
 ```
 
     #> Error: value for '2 * 2' not found
