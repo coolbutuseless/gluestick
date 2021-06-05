@@ -53,7 +53,6 @@ gluestick <- function(fmt, src = parent.frame(), open = "{", close = "}", eval =
   # Brute force the open/close characters into a regular expression for
   # extracting the expressions from the format string
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
   open  <- gsub("(.)", "\\\\\\1", open ) # Escape everything!!
   close <- gsub("(.)", "\\\\\\1", close) # Escape everything!!
   re    <- paste0(open, ".*?", close)
@@ -70,9 +69,15 @@ gluestick <- function(fmt, src = parent.frame(), open = "{", close = "}", eval =
   exprs <- substr(exprs, nchar_open + 1L, nchar(exprs) - nchar_close)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # create a valid sprintf fmt string
+  # create a valid sprintf fmt string.
+  #  - replace all "{expr}" strings with "%s"
+  #  - escape any '%' so sprintf() doesn't try and use them for formatting
+  #    but only if the '%' is NOT followed by an 's'
+  #
+  # gluestick() doesn't deal with any pathological cases
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  fmt_sprintf <- gsub(re, "%s", fmt)
+  fmt_sprintf <- gsub(re      , "%s", fmt)
+  fmt_sprintf <- gsub("%(?!s)", "%%", fmt_sprintf, perl=TRUE)
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Evaluate
@@ -94,7 +99,7 @@ gluestick <- function(fmt, src = parent.frame(), open = "{", close = "}", eval =
 
 if (FALSE) {
   src <- list(name = 'mike', score = c(3, 5))
-  fmt <- "hello {name} your score is {score}"
+  fmt <- "hello 3% {name} your score is {score}"
 
   gluestick(fmt, src)
 }

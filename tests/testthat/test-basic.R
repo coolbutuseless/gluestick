@@ -52,5 +52,15 @@ test_that("multiplication works", {
     "not found"
   )
 
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  src <- list(name = 'mike', score = 10)
+  fmt <- "{name}'s score is {score}%"
+
+  expect_identical(
+    gluestick(fmt, src),
+    c("mike's score is 10%")
+  )
+
 
 })
